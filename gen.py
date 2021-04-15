@@ -57,7 +57,19 @@ def callbackFunc(event):
         add_button = tkinter.Button(mouse_window,text='Добавить действие',command=lambda: add_action(mouse_window,type_var_button.get(),'move',x_spin.get(),y_spin.get()))
         add_button.grid(row=4,column=1,columnspan=2)
 
+def pause_add(window):
+    pause_window = tkinter.Toplevel(window, padx=5, pady=5)
+    pause_window.title('Добавление паузы')
+    pause_window['bg'] = 'lightgray'
 
+    num_label = tkinter.Label(pause_window,text='Продолжительность паузы', font=("Arial Bold", 13), bg='lightgray')
+    num_label.grid(row=1,column=1)
+
+    num_spin = tkinter.Spinbox(pause_window,from_=0,to=9999,bg='lightgray')
+    num_spin.grid(row=1,column=2)
+
+    add_button = tkinter.Button(pause_window,text='Добавить действие',command=lambda: add_action(pause_window,'pause',' ',num_spin.get(),' '))
+    add_button.grid(row=2,column=1,columnspan=2)
 
 def close_window(window):
     window.destroy()
@@ -76,7 +88,7 @@ def main():
     button_create = tkinter.Button(root, text="Создать", command=lambda: create(root))
     button_create.grid(row=3, column=1, pady=5)
 
-    button_delete = tkinter.Button(root, text="Удалить", command=delete)
+    button_delete = tkinter.Button(root, text="Удалить", command=lambda: delete(root))
     button_delete.grid(row=4, column=1)
 
     button_quit = tkinter.Button(root, text="Выйти", command=lambda: close_window(root))
@@ -99,7 +111,7 @@ def instruct(window):
     text_body1 = tkinter.Label(instruct_window,text='Кликер-сценарий создается путем последовательного добавления действий', font=("Arial Bold", 12), bg='lightgray')
     text_body1.grid(row=3,column=1,sticky='w')
 
-    text_body2 = tkinter.Label(instruct_window,text='Для начала, вам нужно выбрать устройство - клавиатура или мышь', font=("Arial Bold", 12), bg='lightgray')
+    text_body2 = tkinter.Label(instruct_window,text='Для начала, вам нужно выбрать устройство - клавиатура или мышь (или пауза)', font=("Arial Bold", 12), bg='lightgray')
     text_body2.grid(row=4,column=1,sticky='w')
 
     text_body3 = tkinter.Label(instruct_window,text='После этого у вас откроется окно в котором вы должны ввести все параметры действия', font=("Arial Bold", 12), bg='lightgray')
@@ -262,16 +274,27 @@ def create(root):
     mouse_button = tkinter.Button(create_window,text='Мышка',command=lambda: mouse_add(create_window))
     mouse_button.grid(row=3,column=2,pady=5)
 
+    pause_button = tkinter.Button(create_window, text="Пауза",command=lambda: pause_add(create_window))
+    pause_button.grid(row=4,column=1,columnspan=2)
+
     # created_label = tkinter.Label(create_window,text='', font=("Arial Bold", 10), bg='lightgray')
     # created_label.grid(row=5,column=1,columnspan=2)
 
     create_button = tkinter.Button(create_window,text='Создать клик-сценарий',command=lambda: create_scenario(create_window))
-    create_button.grid(row=4,column=1,columnspan=2)
+    create_button.grid(row=5,column=1,columnspan=2,pady=5)
 
     create_window.mainloop()
 
-def delete():
-    print('deleted')
+def delete(window):
+    delete_window = tkinter.Toplevel(window)
+    delete_window.title('Удаление сценариев')
+    delete_window['bg'] = 'lightgray'
+
+    button_quit = tkinter.Button(delete_window, text="Выйти", command=lambda: close_window(delete_window))
+    button_quit.grid(row=5, column=1)
+
+
+    delete_window.mainloop()
 
 if __name__ == "__main__":
     main()
