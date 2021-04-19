@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import pyautogui
 import csv
+from os import remove
 
 all = {'0','1','2','3','4','5','6','7','8','9'}
 global_list = []
@@ -75,6 +76,7 @@ def close_window(window):
     window.destroy()
 
 def main():
+    global root
     root = tkinter.Tk()
     root.title("Генератор сценариев")
     root['bg'] = 'lightgray'
@@ -216,11 +218,6 @@ def mouse_add(window):
     type_combo['state'] = 'readonly'
     type_combo.grid(row=1,column=2)
 
-    
-
-    # close_button = tkinter.Button(mouse_window,text='Выйти',command=lambda: close_window(mouse_window))
-    # close_button.grid(row=10,column=1,pady=5,columnspan=2)
-
     type_combo.bind("<<ComboboxSelected>>", callbackFunc)
 
     mouse_window.mainloop()
@@ -255,6 +252,8 @@ def create_scenario(window):
     
     message = 'Клик-сценарий "' + file_name + '" успешно создан'
     mb = messagebox.showinfo(title='Успешно',message=message)
+    close_window(window)
+    close_window(root)
 
 
 def create(root):
@@ -285,13 +284,161 @@ def create(root):
 
     create_window.mainloop()
 
+def delete_scenario(scenario_name,window):
+    remove(scenario_name)
+    name_to_delete = scenario_name[9] + ';'
+    with open('file_count.csv', 'r') as file:
+        a = set(name_to_delete)
+        a.remove(';')
+        cur_lines = file.read()
+        b = set(cur_lines)
+        b.remove(';')
+        c = a ^ b
+    with open('file_count.csv', 'w') as file1:
+        for i in c:
+          file1.write(str(i) + ';')
+
+        
+    close_window(window) 
+
 def delete(window):
     delete_window = tkinter.Toplevel(window)
     delete_window.title('Удаление сценариев')
     delete_window['bg'] = 'lightgray'
 
+    file_name0 = 'scenario_0.csv'
+    file_name1 = 'scenario_1.csv'
+    file_name2 = 'scenario_2.csv'
+    file_name3 = 'scenario_3.csv'
+    file_name4 = 'scenario_4.csv'
+    file_name5 = 'scenario_5.csv'
+    file_name6 = 'scenario_6.csv'
+    file_name7 = 'scenario_7.csv'
+    file_name8 = 'scenario_8.csv'
+    file_name9 = 'scenario_9.csv'
+
+    try:
+        file = open(file_name0)
+        print('opened')
+        file.close()
+        label_0 = tkinter.Label(delete_window,text=file_name0, font=("Arial Bold", 13), bg='lightgray')
+        label_0.grid(row=1,column=1)
+
+        delete_0 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name0,delete_window))
+        delete_0.grid(row=1, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name1)
+        print('opened')
+        file.close()
+        label_1 = tkinter.Label(delete_window,text=file_name1, font=("Arial Bold", 13), bg='lightgray')
+        label_1.grid(row=2,column=1)
+
+        delete_1 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name1,delete_window))
+        delete_1.grid(row=2, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name2)
+        print('opened')
+        file.close()
+        label_2 = tkinter.Label(delete_window,text=file_name2, font=("Arial Bold", 13), bg='lightgray')
+        label_2.grid(row=3,column=1)
+
+        delete_2 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name2,delete_window))
+        delete_2.grid(row=3, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name3)
+        print('opened')
+        file.close()
+        label_3 = tkinter.Label(delete_window,text=file_name3, font=("Arial Bold", 13), bg='lightgray')
+        label_3.grid(row=4,column=1)
+
+        delete_3 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name3,delete_window))
+        delete_3.grid(row=4, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name4)
+        print('opened')
+        file.close()
+        label_4 = tkinter.Label(delete_window,text=file_name4, font=("Arial Bold", 13), bg='lightgray')
+        label_4.grid(row=5,column=1)
+
+        delete_4 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name4,delete_window))
+        delete_4.grid(row=5, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name5)
+        print('opened')
+        file.close()
+        label_5 = tkinter.Label(delete_window,text=file_name5, font=("Arial Bold", 13), bg='lightgray')
+        label_5.grid(row=6,column=1)
+
+        delete_5 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name5,delete_window))
+        delete_5.grid(row=6, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name6)
+        print('opened')
+        file.close()
+        label_6 = tkinter.Label(delete_window,text=file_name6, font=("Arial Bold", 13), bg='lightgray')
+        label_6.grid(row=7,column=1)
+
+        delete_6 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name6,delete_window))
+        delete_6.grid(row=7, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name7)
+        print('opened')
+        file.close()
+        label_7 = tkinter.Label(delete_window,text=file_name7, font=("Arial Bold", 13), bg='lightgray')
+        label_7.grid(row=8,column=1)
+
+        delete_7 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name7,delete_window))
+        delete_7.grid(row=8, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name8)
+        print('opened')
+        file.close()
+        label_8 = tkinter.Label(delete_window,text=file_name8, font=("Arial Bold", 13), bg='lightgray')
+        label_8.grid(row=9,column=1)
+
+        delete_8 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name8,delete_window))
+        delete_8.grid(row=9, column=2)
+    except:
+        pass
+
+    try:
+        file = open(file_name9)
+        print('opened')
+        file.close()
+        label_9 = tkinter.Label(delete_window,text=file_name9, font=("Arial Bold", 13), bg='lightgray')
+        label_9.grid(row=10,column=1)
+
+        delete_9 = tkinter.Button(delete_window, text="Удалить", command=lambda: delete_scenario(file_name9,delete_window))
+        delete_9.grid(row=10, column=2)
+    except:
+        pass
+                
     button_quit = tkinter.Button(delete_window, text="Выйти", command=lambda: close_window(delete_window))
-    button_quit.grid(row=5, column=1)
+    button_quit.grid(row=13, column=1, columnspan=2)
 
 
     delete_window.mainloop()
