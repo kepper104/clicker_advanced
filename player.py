@@ -10,6 +10,7 @@ btn_var = ''
 values = (' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', 'accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20',
           'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright')
 loop = False
+delay_spin = 1
 
 
 def close_window(window):
@@ -26,14 +27,15 @@ def execute(commands, window):
     # execute_window.title('Выбор сценария')
     # execute_window['bg'] = 'lightgray'
     # count_down = delay_spin.get()
-    count_down = 2
+    count_down = delay_spin
     # for i in range(count_down, 0, -1):
 
     #     tkinter.Label(execute_window, text="Старт через " +
     #                   str(i)).grid(row=1, column=1, pady=5)
     #     # count_down -= 1
     #     sleep(1)
-    sleep(count_down)
+    if count_down != 0:
+        sleep(count_down)
     if loop:
         while True:
             for command in commands:
@@ -147,8 +149,14 @@ def settings(window):
         else:
             print("fals")
             loop = False
+
+    def save_delay():
+        global delay_spin
+        delay_spin = delay.get()
+        print("lol")
     btn_var = tkinter.StringVar()
-    cur_combo = btn_var.get()
+    delay = tkinter.IntVar()
+    # cur_combo = btn_var.get()
     loop_checked = tkinter.IntVar()
     settings_window = tkinter.Toplevel(window, padx=5, pady=5)
     settings_window.title('Добавление паузы')
@@ -163,7 +171,7 @@ def settings(window):
     delay_label.grid(row=2, column=1)
 
     delay_spin = tkinter.Spinbox(
-        settings_window, from_=0, to=100, bg='lightgray')
+        settings_window, from_=1, to=10000, bg='lightgray', command=save_delay, textvariable=delay)
     delay_spin.grid(row=2, column=2)
 
     ender_label = tkinter.Label(settings_window, text="Клавиша завершения", font=(
@@ -173,12 +181,8 @@ def settings(window):
     btn_combo = ttk.Combobox(settings_window, textvariable=btn_var)
     btn_combo['values'] = values
     btn_combo['state'] = 'readonly'
-    # btn_combo.current(cur_combo)
     btn_combo.grid(row=3, column=2)
 
-    # loop_label = tkinter.Label(settings_window, text="Повтор сценария", font=(
-    #     "Arial Bold", 16), bg='lightgray')
-    # loop_label.grid(row=4, column=1)
     loop_check = tkinter.Checkbutton(
         settings_window, text="Повтор сценария", variable=loop_checked, onvalue=1, offvalue=0, bg='lightgray', font=("Arial Bold", 16), command=save)
     loop_check.grid(row=4, column=1, columnspan=2)
