@@ -9,14 +9,19 @@ from time import sleep
 btn_var = ''
 values = (' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', 'accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20',
           'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright')
+loop = False
 
 
 def close_window(window):
     window.destroy()
 
 
+# def save_settings(window, looped,)
+
+
 def execute(commands, window):
     global delay_spin
+    global loop
     # execute_window = tkinter.Toplevel(window, padx=5, pady=5)
     # execute_window.title('Выбор сценария')
     # execute_window['bg'] = 'lightgray'
@@ -29,32 +34,58 @@ def execute(commands, window):
     #     # count_down -= 1
     #     sleep(1)
     sleep(count_down)
-    for command in commands:
-        if command[0] == 'pause':
-            sleep(int(command[2]))
-        elif command[0] == 'phrase':
-            for i in range(int(command[2])):
-                pyautogui.write(command[1], command[3])
-        elif command[0] == 'press':
-            for i in range(int(command[2])):
-                pyautogui.press(command[1], int(command[3]))
-        elif command[0] == 'hotkey':
-            for i in range(int(command[2])):
-                a = command[1].split("+")
-                pyautogui.hotkey(a[0], a[1])
-        elif command[0] == 'hold':
-            pyautogui.keyDown(command[1])
-        elif command[0] == 'unhold':
-            pyautogui.keyUp(command[1])
-        elif command[0] == 'click':
-            if int(command[2]) + int(command[3]) != -2:
+    if loop:
+        while True:
+            for command in commands:
+                if command[0] == 'pause':
+                    sleep(int(command[2]))
+                elif command[0] == 'phrase':
+                    for i in range(int(command[2])):
+                        pyautogui.write(command[1], command[3])
+                elif command[0] == 'press':
+                    for i in range(int(command[2])):
+                        pyautogui.press(command[1], int(command[3]))
+                elif command[0] == 'hotkey':
+                    for i in range(int(command[2])):
+                        a = command[1].split("+")
+                        pyautogui.hotkey(a[0], a[1])
+                elif command[0] == 'hold':
+                    pyautogui.keyDown(command[1])
+                elif command[0] == 'unhold':
+                    pyautogui.keyUp(command[1])
+                elif command[0] == 'click':
+                    if int(command[2]) + int(command[3]) != -2:
+                        pyautogui.moveTo(int(command[2]), int(command[3]))
+                    pyautogui.click(button=command[1])
+                elif command[0] == 'move':
+                    pyautogui.moveTo(int(command[2]), int(command[3]))
+                print(command)
+    else:
+        for command in commands:
+            if command[0] == 'pause':
+                sleep(int(command[2]))
+            elif command[0] == 'phrase':
+                for i in range(int(command[2])):
+                    pyautogui.write(command[1], command[3])
+            elif command[0] == 'press':
+                for i in range(int(command[2])):
+                    pyautogui.press(command[1], int(command[3]))
+            elif command[0] == 'hotkey':
+                for i in range(int(command[2])):
+                    a = command[1].split("+")
+                    pyautogui.hotkey(a[0], a[1])
+            elif command[0] == 'hold':
+                pyautogui.keyDown(command[1])
+            elif command[0] == 'unhold':
+                pyautogui.keyUp(command[1])
+            elif command[0] == 'click':
+                if int(command[2]) + int(command[3]) != -2:
+                    pyautogui.moveTo(int(command[2]), int(command[3]))
+                pyautogui.click(button=command[1])
+            elif command[0] == 'move':
                 pyautogui.moveTo(int(command[2]), int(command[3]))
-            pyautogui.click(button=command[1])
-        elif command[0] == 'move':
-            pyautogui.moveTo(int(command[2]), int(command[3]))
-
-        print(command)
-    exit()
+            print(command)
+        exit()
 
 
 def prepare_to_execute(file_name, window):
@@ -106,10 +137,19 @@ def select(window):
 def settings(window):
     global btn_var, delay_spin
     global cur_combo
+    # global loop
 
+    def save():
+        global loop
+        if loop_checked.get() == 1:
+            loop = True
+            print("truf")
+        else:
+            print("fals")
+            loop = False
     btn_var = tkinter.StringVar()
     cur_combo = btn_var.get()
-
+    loop_checked = tkinter.IntVar()
     settings_window = tkinter.Toplevel(window, padx=5, pady=5)
     settings_window.title('Добавление паузы')
     settings_window['bg'] = 'lightgray'
@@ -136,6 +176,12 @@ def settings(window):
     # btn_combo.current(cur_combo)
     btn_combo.grid(row=3, column=2)
 
+    # loop_label = tkinter.Label(settings_window, text="Повтор сценария", font=(
+    #     "Arial Bold", 16), bg='lightgray')
+    # loop_label.grid(row=4, column=1)
+    loop_check = tkinter.Checkbutton(
+        settings_window, text="Повтор сценария", variable=loop_checked, onvalue=1, offvalue=0, bg='lightgray', font=("Arial Bold", 16), command=save)
+    loop_check.grid(row=4, column=1, columnspan=2)
     button_quit = tkinter.Button(
         settings_window, text="Сохранить", command=lambda: close_window(settings_window))
     button_quit.grid(row=5, column=1, pady=5, columnspan=2)
