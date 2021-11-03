@@ -1,4 +1,5 @@
 import tkinter
+import threading
 from tkinter import ttk
 from tkinter import messagebox
 import pyautogui
@@ -6,7 +7,7 @@ import csv
 from glob import glob
 import os
 from time import sleep
-btn_var = ''
+btn_var = 'pageup'
 values = (' ', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', 'accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20',
           'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6', 'num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright')
 loop = False
@@ -18,6 +19,9 @@ def close_window(window):
 
 
 # def save_settings(window, looped,)
+def close():
+    print("exited")
+    os._exit(0)
 
 
 def execute(commands, window):
@@ -34,8 +38,13 @@ def execute(commands, window):
     #                   str(i)).grid(row=1, column=1, pady=5)
     #     # count_down -= 1
     #     sleep(1)
+    path = os.getcwd() + '\\'
+    # print(path)
+    # exec("stopper")
+    import stopper
     if count_down != 0:
         sleep(count_down)
+
     if loop:
         while True:
             for command in commands:
@@ -61,7 +70,7 @@ def execute(commands, window):
                     pyautogui.click(button=command[1])
                 elif command[0] == 'move':
                     pyautogui.moveTo(int(command[2]), int(command[3]))
-                print(command)
+                # print(command)
     else:
         for command in commands:
             if command[0] == 'pause':
@@ -86,7 +95,7 @@ def execute(commands, window):
                 pyautogui.click(button=command[1])
             elif command[0] == 'move':
                 pyautogui.moveTo(int(command[2]), int(command[3]))
-            print(command)
+            # print(command)
         exit()
 
 
@@ -137,11 +146,12 @@ def select(window):
 
 
 def settings(window):
-    global btn_var, delay_spin
+    global btn_var
+    global delay_spin
     global cur_combo
     # global loop
 
-    def save():
+    def save_loop():
         global loop
         if loop_checked.get() == 1:
             loop = True
@@ -154,7 +164,13 @@ def settings(window):
         global delay_spin
         delay_spin = delay.get()
         print("lol")
-    btn_var = tkinter.StringVar()
+
+    def save_btn(event):
+        global btn_var
+        btn_var = btn.get()
+        print(btn_var)
+
+    btn = tkinter.StringVar()
     delay = tkinter.IntVar()
     # cur_combo = btn_var.get()
     loop_checked = tkinter.IntVar()
@@ -178,13 +194,15 @@ def settings(window):
         "Arial Bold", 16), bg='lightgray')
     ender_label.grid(row=3, column=1)
 
-    btn_combo = ttk.Combobox(settings_window, textvariable=btn_var)
+    btn_combo = ttk.Combobox(
+        settings_window, textvariable=btn)
     btn_combo['values'] = values
     btn_combo['state'] = 'readonly'
     btn_combo.grid(row=3, column=2)
+    btn_combo.bind('<<ComboboxSelected>>', save_btn)
 
     loop_check = tkinter.Checkbutton(
-        settings_window, text="Повтор сценария", variable=loop_checked, onvalue=1, offvalue=0, bg='lightgray', font=("Arial Bold", 16), command=save)
+        settings_window, text="Повтор сценария", variable=loop_checked, onvalue=1, offvalue=0, bg='lightgray', font=("Arial Bold", 16), command=save_loop)
     loop_check.grid(row=4, column=1, columnspan=2)
     button_quit = tkinter.Button(
         settings_window, text="Сохранить", command=lambda: close_window(settings_window))
